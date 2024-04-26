@@ -5,12 +5,14 @@ import { useState, useEffect } from "react";
 import { signInAnonymously, signOut, onAuthStateChanged } from "firebase/auth";
 
 //firestore
-import { db } from "./utils/firebaseConfig";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
+import AudioRecorder from "./components/audioRecorder";
+
+import CameraUploader from "./components/cameraUploader";
+import TextRecorder from "./components/textRecorder";
 export default function App() {
   const [user, setUser] = useState(null);
-  const [textFromUser, setTextFromUser] = useState(null);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -44,39 +46,29 @@ export default function App() {
     }
   };
 
-  const addDataToFirestore = async () => {
-    try {
-      const docRef = await addDoc(collection(db, "users"), {
-        name: textFromUser,
-        userId: user.uid,
-        timestamp: serverTimestamp(),
-      });
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-  };
   return (
-    <View className="flex-1 items-center justify-center bg-red-500">
-      <Text className="text-3xl">News Agents</Text>
+    <View className="flex-1 items-center justify-around bg-red-500">
+      <View>
+        <Text className="text-3xl">News Agents</Text>
 
-      {user ? <Text>User id {user.uid}</Text> : <Text>logged out</Text>}
-      {user ? (
-        <Button title="Log Out" onPress={logout} />
-      ) : (
-        <Button title="Log In Anonymously" onPress={loginAnonymously} />
-      )}
-      <TextInput
-        placeholder="Enter something..."
-        value={textFromUser}
-        onChangeText={setTextFromUser}
-      />
-      {textFromUser && (
-        <>
-          <Button title="add data to firestore" onPress={addDataToFirestore} />
-        </>
-      )}
+        {user ? <Text>User id {user.uid}</Text> : <Text>logged out</Text>}
+        {user ? (
+          <Button title="Log Out" onPress={logout} />
+        ) : (
+          <Button title="Log In Anonymously" onPress={loginAnonymously} />
+        )}
 
+        {user && <TextRecorder user={user} />}
+      </View>
+
+      {user && (
+        <View>
+          {/* <AudioRecorder user={user} /> */}
+
+          {/* <TextRecorder user={user} /> */}
+          <CameraUploader user={user} />
+        </View>
+      )}
       <StatusBar style="auto" />
     </View>
   );
