@@ -1,5 +1,13 @@
 import React, { useState, useRef } from "react";
-import { View, StyleSheet, Button, Text, Alert, Image } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Button,
+  Text,
+  Alert,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
 import { db } from "../utils/firebaseConfig";
@@ -58,7 +66,9 @@ const CameraUploader = ({ user }) => {
     }
   };
   const uploadImage = async () => {
+    setLoading(true);
     if (!selectedImage) {
+      setLoading(false);
       Alert.alert("No image selected", "Please select an image first.");
       return;
     }
@@ -82,9 +92,11 @@ const CameraUploader = ({ user }) => {
 
       Alert.alert("Image uploaded successfully");
       setSelectedImage(null);
+      setLoading(false);
     } catch (error) {
       console.error("Error uploading image:", error);
       Alert.alert("Error", "Failed to upload image. Please try again later.");
+      setLoading(false);
     }
   };
 
@@ -118,7 +130,9 @@ const CameraUploader = ({ user }) => {
   };
 
   const uploadVideo = async () => {
+    setLoading(true);
     if (!selectedVideo) {
+      setLoading(false);
       Alert.alert("No video selected", "Please select a video first.");
       return;
     }
@@ -144,9 +158,11 @@ const CameraUploader = ({ user }) => {
 
       Alert.alert("Video uploaded successfully");
       setSelectedVideo(null);
+      setLoading(false);
     } catch (error) {
       console.error("Error uploading video:", error);
       Alert.alert("Error", "Failed to upload video. Please try again later.");
+      setLoading(false);
     }
   };
 
@@ -189,6 +205,7 @@ const CameraUploader = ({ user }) => {
 
   //fetch from firestore
   const fetchImageData = async (userId, type) => {
+    setLoading(true);
     try {
       // Create a query to find documents where the "userId" field matches the specified userId
       const q = query(collection(db, type), where("userId", "==", userId));
@@ -202,10 +219,13 @@ const CameraUploader = ({ user }) => {
         } else if (type === "videos") {
           setVideoUrlFromFirestore(docSnap.data().videoUrl);
         }
+        setLoading(false);
       } else {
+        setLoading(false);
         setImageUrlFromFirestore("No imageurl found for this user.");
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error fetching text data:", error);
     }
   };
@@ -260,6 +280,8 @@ const CameraUploader = ({ user }) => {
         title="fetch Video"
         onPress={() => fetchImageData(user.uid, "videos")}
       />
+
+      {loading && <ActivityIndicator size="large" color="blue" />}
     </View>
   );
 };

@@ -4,8 +4,7 @@ import {
   addDoc,
   serverTimestamp,
   query,
-  where,
-  getDocs,
+
 } from "firebase/firestore";
 
 import { useState } from "react";
