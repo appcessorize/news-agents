@@ -11,6 +11,7 @@ import CameraUploader from "../components/cameraUploader";
 import TextRecorder from "../components/textRecorder";
 import MedialList from "../components/mediaList";
 import LoginLogout from "../components/loginLogout";
+import CallCloudFunc from "../components/callCloudFunc";
 
 const HomeScreen = ({ navigation }) => {
   const [user, setUser] = useState(null);
@@ -30,6 +31,10 @@ const HomeScreen = ({ navigation }) => {
   }, []);
   return (
     <View className="flex-1 items-center justify-around bg-red-500">
+      <Button
+        title="Go to press release"
+        onPress={() => navigation.navigate("PressRelease")}
+      />
       <Text className="text-3xl">News Agents</Text>
       <Button
         title="Open Faq"
@@ -40,11 +45,11 @@ const HomeScreen = ({ navigation }) => {
 
       {user && (
         <View>
-          <MedialList user={user} />
+          {/* <MedialList user={user} /> */}
           {/* <AudioRecorder user={user} /> */}
-
+          <CallCloudFunc />
           {/* <TextRecorder user={user} /> */}
-          <CameraUploader user={user} />
+          {/* <CameraUploader user={user} /> */}
         </View>
       )}
       <StatusBar style="auto" />

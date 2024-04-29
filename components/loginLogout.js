@@ -3,22 +3,9 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Button, TextInput } from "react-native";
 import { useState, useEffect } from "react";
 import { signInAnonymously, signOut, onAuthStateChanged } from "firebase/auth";
-
+import useAuthentication from "../hooks/useAuthentication";
 const LoginLogout = () => {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        console.log("User is signed in:", currentUser.uid);
-        setUser(currentUser);
-      } else {
-        console.log("No user is signed in.");
-        setUser(null);
-      }
-    });
-
-    return () => unsubscribe(); // Unsubscribe on unmount
-  }, []);
+  const { user } = useAuthentication();
 
   const loginAnonymously = async () => {
     try {

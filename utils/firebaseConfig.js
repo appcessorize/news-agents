@@ -9,15 +9,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-
+import { getFunctions } from "firebase/functions";
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCYq5ydrpUDRKvTZHtTfbLlVbh9wZuO99o",
-  authDomain: "photo-upload-dc1ce.firebaseapp.com",
-  projectId: "photo-upload-dc1ce",
-  storageBucket: "photo-upload-dc1ce.appspot.com",
-  messagingSenderId: "574907793736",
-  appId: "1:574907793736:web:fd22de14b849fcdf51b37d",
+  apiKey: "AIzaSyBzVt83VZ-s1y2xxyLha1_YpOl86FIIcdQ",
+  authDomain: "treeswap-wales.firebaseapp.com",
+  projectId: "treeswap-wales",
+  storageBucket: "treeswap-wales.appspot.com",
+  messagingSenderId: "833651371642",
+  appId: "1:833651371642:web:019f029921963cf7e295c3",
 };
 
 // Initialize Firebase
@@ -30,5 +30,5 @@ const auth = initializeAuth(app, {
 
 const db = getFirestore(app);
 const storage = getStorage(app);
-
-export { auth, db, storage };
+const functions = getFunctions(app);
+export { auth, db, storage, functions };
