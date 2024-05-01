@@ -1,4 +1,4 @@
-import { View, Text, Button, ActivityIndicator } from "react-native";
+import { View, Text, Button, ActivityIndicator, Pressable } from "react-native";
 import { db } from "../utils/firebaseConfig";
 import {
   collection,
@@ -9,7 +9,12 @@ import {
 } from "firebase/firestore";
 import useCurrentLocation from "../hooks/useWeather";
 import { useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import ButtonIconLeft from "../components/ButtonIconLeft";
 const NewsRoom = () => {
+  const navigation = useNavigation();
   const {
     errorMsg,
     loading,
@@ -88,7 +93,7 @@ const NewsRoom = () => {
   //     setTextLoading(false);
   //     console.error("Error fetching text data:", error);
   //   }
-
+  const [hasStories, setHasStories] = useState(false);
   //       2: "Partly cloudy",
   //       3: "Overcast",
   //       45: "Fog",
@@ -126,25 +131,84 @@ const NewsRoom = () => {
   //     }
   //   };
   return (
-    <View className="flex-1 items-center justify-around ">
-      {loading || weatherLoading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : errorMsg || weatherError ? (
-        <Text>{errorMsg || weatherError}</Text>
-      ) : weather ? (
-        <Text>{weather}</Text>
-      ) : (
-        <Text>Weather data not available</Text>
-      )}
+    // <View className="flex-1 items-center justify-around ">
+    //   {loading || weatherLoading ? (
+    //     <ActivityIndicator size="large" color="#0000ff" />
+    //   ) : errorMsg || weatherError ? (
+    //     <Text>{errorMsg || weatherError}</Text>
+    //   ) : weather ? (
+    //     <Text>{weather}</Text>
+    //   ) : (
+    //     <Text>Weather data not available</Text>
+    //   )}
 
-      <Button
-        title="send weather content to firestore"
-        onPress={() => addWeatherToFirestore(weather)}
-      />
-      <Button
-        title="Get weather content from firestore"
-        onPress={() => getWeatherDataFromFireStore()}
-      />
+    //   <Button
+    //     title="send weather content to firestore"
+    //     onPress={() => addWeatherToFirestore(weather)}
+    //   />
+    //   <Button
+    //     title="Get weather content from firestore"
+    //     onPress={() => getWeatherDataFromFireStore()}
+    //   />
+    //   <View>
+    //     <Text>My stories </Text>
+    //     <Text>Story components </Text>
+    //     <Text>-----------</Text>
+    //     <Text>others stories </Text>
+    //     <Text>Story components with comment</Text>
+    //   </View>
+    // </View>
+
+    <View className="flex-1 bg-gray-50 p-4 flex items-center">
+      <View className="w-full pb-4">
+        <Text className="text-3xl font-bold mb-4 text-left">News Room</Text>
+
+        <Text className="pb-2 text-lg leading-relaxed text-gray-600 font-semibold text-left ">
+          Comment on your friends stories
+        </Text>
+      </View>
+
+      {hasStories ? (
+        <View></View>
+      ) : (
+        <View className="w-full pb-4">
+          <Text className="pb-2 text-lg leading-relaxed font-normal text-left ">
+            This is where your AI journalist interviews You about your fiends
+            stories.
+          </Text>
+          <Text className="pb-4 text-lg leading-relaxed font-normal text-left ">
+            Your friends haven't asked you to comment yet
+          </Text>
+          <View className="flex flex-row  justify-center space-x-2">
+            {/* <Pressable
+              className="flex-1 bg-red-500 hover:bg-red-700 text-white font-bold py-2 rounded flex items-center justify-center flex-row"
+              onPress={() => console.log("pressed")}
+            >
+              <Text className="text-xl font-bold text-white mr-1">
+                Add Friends
+              </Text>
+              <Ionicons name="add-circle" size={24} color="white" />
+            </Pressable> */}
+            <ButtonIconLeft
+              buttonText="Add Friends"
+              iconName="add-circle"
+              onPress={() => console.log("pressed")}
+            />
+            <Pressable
+              className="flex-1 bg-red-500 hover:bg-red-700 text-white font-bold py-2 rounded flex items-center justify-center flex-row"
+              onPress={() => console.log("pressed")}
+            >
+              <Entypo name="modern-mic" size={24} color="white" />
+              <Text
+                className="text-xl font-bold text-white ml-1"
+                onPress={() => navigation.navigate("InterviewScreen")}
+              >
+                Try It Out
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      )}
     </View>
   );
 };

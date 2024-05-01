@@ -5,9 +5,19 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  Button,
 } from "react-native";
-
+import { auth } from "../utils/firebaseConfig";
+import { signInAnonymously, signOut, onAuthStateChanged } from "firebase/auth";
 const AboutTab = () => {
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User signed out");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
   const faqs = [
     {
       question: "What is React Native?",
@@ -41,6 +51,8 @@ const AboutTab = () => {
             <Text className="text-gray-700">{faq.answer}</Text>
           </View>
         ))}
+        <Text className="text-gray-700  mb-4 ">Logout of the app</Text>
+        <Button title="Logout" onPress={logout} />
       </ScrollView>
     </View>
   );

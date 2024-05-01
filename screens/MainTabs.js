@@ -12,27 +12,36 @@ export default function MainTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        tabBarActiveTintColor: "tomato",
+        tabBarInactiveTintColor: "gray",
+        tabBarStyle: [
+          {
+            display: "flex",
+          },
+          null,
+        ],
+
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
           if (route.name === "About") {
             iconName = focused
-              ? "information-circle-outline"
-              : "information-circle";
+              ? "information-circle"
+              : "information-circle-outline";
           } else if (route.name === "News Room") {
-            iconName = focused ? "newspaper-outline" : "newspaper";
+            iconName = focused ? "newspaper" : "newspaper-outline";
           } else if (route.name === "Press Release") {
-            iconName = focused ? "megaphone-outline" : "megaphone";
+            iconName = focused ? "megaphone" : "megaphone-outline";
           }
 
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
       })}
-      tabBarOptions={{
-        activeTintColor: "tomato",
-        inactiveTintColor: "gray",
-      }}
+      // tabBarOptions={{
+      //   activeTintColor: "tomato",
+      //   inactiveTintColor: "gray",
+      // }}
     >
       <Tab.Screen name="News Room" component={NewsRoom} />
       <Tab.Screen name="Press Release" component={PressRelease} />
