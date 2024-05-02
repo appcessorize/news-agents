@@ -28,9 +28,7 @@ const LoginLogout = () => {
 
   return (
     <View>
-      <Text className="text-3xl">News Agents</Text>
-
-      {user ? <Text>User id {user.uid}</Text> : <Text>logged out</Text>}
+      {/* {user ? <Text>User id {user.uid}</Text> : <Text>logged out</Text>} */}
       {user ? (
         <Button title="Log Out" onPress={logout} />
       ) : (

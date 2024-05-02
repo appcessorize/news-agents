@@ -7,6 +7,8 @@ import NoVideoBottomContent from "../components/PressReleaseNoVid.js/NoVideoBott
 import { Video } from "expo-av";
 import TextForm from "../components/PressReleaseNoVid.js/TextForm";
 import TopText from "../components/PressReleaseNoVid.js/TopText";
+import FormQuestions from "../components/PressReleaseNoVid.js/FormQuestions";
+
 const PressRelease = () => {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const videoRef = useRef(null);
@@ -62,6 +64,13 @@ const PressRelease = () => {
       setFullScreenVideo(!fullScreenVideo);
     }
   };
+
+  // debug
+  useEffect(() => {
+    if (selectedVideo && videoRef.current) {
+      videoRef.current.setIsMutedAsync(true);
+    }
+  }, [selectedVideo]);
   return (
     <KeyboardAvoidingView className="flex-1 bg-gray-50 p-4 flex items-center text-gray-600">
       {/* <View className="w-full pb-4">

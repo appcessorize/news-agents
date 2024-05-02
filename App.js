@@ -9,6 +9,7 @@ import MainTabs from "./screens/MainTabs";
 import InterviewScreen from "./screens/InterviewScreen";
 import OnboardScreen from "./screens/OnboardScreen";
 import NewsReport from "./screens/NewsReport";
+import AddFriends from "./screens/AddFriends";
 export default function App() {
   const { user } = useAuthentication();
   const Stack = createNativeStackNavigator();
@@ -17,16 +18,17 @@ export default function App() {
       {user ? (
         <Stack.Navigator>
           <Stack.Screen
-            name="NewsReport"
-            component={NewsReport}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
             name="MainTabs"
             component={MainTabs}
             options={{ headerShown: false }}
           />
 
+          <Stack.Screen
+            name="NewsReport"
+            component={NewsReport}
+            options={{ headerShown: false }}
+          />
+          {/* 
           <Stack.Screen
             name="HomeScreen"
             component={HomeScreen}
@@ -36,8 +38,12 @@ export default function App() {
             name="PressRelease"
             component={PressRelease}
             options={{ headerShown: false }}
+          /> */}
+          <Stack.Screen
+            name="AddFriends"
+            component={AddFriends}
+            options={{ headerShown: false }}
           />
-
           <Stack.Group screenOptions={{ presentation: "modal" }}>
             <Stack.Screen
               name="FAQScreen"

@@ -12,7 +12,8 @@ import { Audio, Video } from "expo-av";
 
 import * as Speech from "expo-speech";
 import { Ionicons } from "@expo/vector-icons";
-
+import ButtonIconLeft from "../components/ButtonIconLeft";
+import Ready from "../components/NewsReport/Ready";
 const videos = {
   newsintro: require("../assets/videos/MENNintroLow.mp4"),
   hugoSleeping: require("../assets/videos/hugoSleeping.mp4"),
@@ -263,17 +264,7 @@ const NewsReport = () => {
           </View>
         </View>
       )}
-
-      {!hideStartScreen && (
-        <View className="bg-white w-full h-full flex justify-center items-center z-50 absolute top-30">
-          <Button
-            title="Start"
-            onPress={() => {
-              startNewsReport();
-            }}
-          />
-        </View>
-      )}
+      {!hideStartScreen && <Ready startNewsReport={startNewsReport} />}
       {!playVideo && (
         <LottieView
           // autoPlay
@@ -293,9 +284,10 @@ const NewsReport = () => {
       )}
       <Video
         ref={videoRef}
-        source={videoSource}
-        // source={{  //   uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        // }} // Update with your video URL
+        // source={videoSource}
+        source={{
+          uri: "https://firebasestorage.googleapis.com/v0/b/treeswap-wales.appspot.com/o/videos%2Fi1FDwSVr0bSqofiO7CXEtmKPhUn1%2F1714653181841?alt=media",
+        }}
         resizeMode="cover"
         useNativeControls={false}
         onPlaybackStatusUpdate={(status) => {

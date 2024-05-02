@@ -1,16 +1,31 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
+import { db } from "../../utils/firebaseConfig";
 import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
+import {
+  Alert,
   View,
   Text,
   TextInput,
   Button,
   StyleSheet,
   Pressable,
+  Modal,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import useAuthentication from "../../hooks/useAuthentication";
 function TextForm({ selectedVideo, setSelectedVideo, descriptionGiven }) {
+  const { user } = useAuthentication();
   const {
     control,
     watch,
@@ -22,29 +37,94 @@ function TextForm({ selectedVideo, setSelectedVideo, descriptionGiven }) {
     },
   });
   const [submittedData, setSubmittedData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const description = watch("description");
   const onSubmit = (data) => {
     console.log("Submitted Data:", data);
+
     setSubmittedData(data);
+    // uploadVideoAndText(data.description);
   };
 
-  const handleSubmitAndUpload = async () => {
-    handleSubmit(onSubmit);
-    console.log("push data to firestore and storage");
-  };
+  // const handleSubmitAndUpload = async () => {
+  //   handleSubmit(onSubmit);
+  //   console.log("push data to firestore and storage");
+  // };
 
+  //upload video and text
+
+  const constructDownloadURL = async (ref) => {
+    const storageBucket = ref.storage.app.options.storageBucket;
+    const fullPath = encodeURIComponent(ref.fullPath);
+    return `https://firebasestorage.googleapis.com/v0/b/${storageBucket}/o/${fullPath}?alt=media`;
+  };
+  const uploadVideoAndText = async (text) => {
+    setLoading(true);
+    if (!selectedVideo) {
+      setLoading(false);
+      Alert.alert("No video selected", "Please select a video first.");
+      return;
+    }
+
+    try {
+      const response = await fetch(selectedVideo);
+      const blob = await response.blob();
+      const storage = getStorage();
+      const videoName = `videos/${user.uid}/${Date.now()}`;
+      const videoRef = storageRef(storage, videoName);
+
+      await uploadBytes(videoRef, blob);
+
+      // Construct the download URL manually using the metadata of the upload task snapshot
+      const videoUrl = await constructDownloadURL(videoRef);
+
+      // Add document to Firestore
+      await addDoc(collection(db, "generate"), {
+        videoUrl: videoUrl,
+        userId: user.uid,
+        content: description,
+        createdAt: serverTimestamp(),
+      });
+
+      Alert.alert("Video uploaded successfully");
+      setSelectedVideo(null);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error uploading video:", error);
+      Alert.alert("Error", "Failed to upload video. Please try again later.");
+      setLoading(false);
+    }
+  };
   return (
     <View>
+      <Modal
+        visible={loading}
+        transparent={true}
+        animationType="none"
+        onRequestClose={() => {
+          /** Intentionally left blank to disable Android back button action */
+        }}
+      >
+        <View
+          className="flex-1 items-center justify-center  "
+          style={{ backgroundColor: "rgba(0, 0, 0, 0.60)" }}
+        >
+          <View className="items-center justify-center p-20 bg-white rounded">
+            <ActivityIndicator size="large" color="#0000ff" />
+            <Text className="text-gray-500  text-lg m-2 font-semibold">
+              uploading...
+            </Text>
+          </View>
+        </View>
+      </Modal>
+
       <View>
-        <Pressable onPress={() => Keyboard.dismiss()}>
-          <Text>Dismiss</Text>
-        </Pressable>
         <Text
           className={`text-xs ${
-            description.length < 30 ? "text-gray-500" : "text-green-500"
+            description.length < 28 ? "text-gray-500" : "text-green-500"
           } `}
         >
-          {description.length}/30
+          {description.length}/28
         </Text>
         <Controller
           control={control}
@@ -72,8 +152,8 @@ function TextForm({ selectedVideo, setSelectedVideo, descriptionGiven }) {
           rules={{
             required: "You must enter a description for the AI to work",
             minLength: {
-              value: 30,
-              message: "Description must be at least 30 characters long",
+              value: 28,
+              message: "Description must be at least 28 characters long",
             },
           }}
         />
@@ -95,13 +175,15 @@ function TextForm({ selectedVideo, setSelectedVideo, descriptionGiven }) {
           </Text>
           <Pressable
             className={`bg-red-500 ${
-              description.length < 30 ? "bg-gray-500" : "hover:bg-red-700"
+              description.length < 28 ? "bg-gray-500" : "hover:bg-red-700"
             } text-white font-bold py-2 mb-2 rounded flex items-center justify-center flex-row`}
             onPress={() => {
-              if (description.length < 30) {
-                handleSubmitAndUpload();
+              if (description.length > 28) {
+                // handleSubmitAndUpload();
+                // handleSubmit(onSubmit);
+                uploadVideoAndText();
               } else {
-                alert("Please add a description of more than 30 character");
+                alert("Please add a description of more than 28 characters");
               }
             }}
           >

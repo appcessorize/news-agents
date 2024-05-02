@@ -5,17 +5,23 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "scheme": "mennnews",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.expomang.newsagentsexpo",
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to capture videos.",
+        "NSMicrophoneUsageDescription": "This app uses the microphone to record audio.",
+        "NSPhotoLibraryUsageDescription": "This app accesses your photo gallery for uploading videos.",
+        "NSContactsUsageDescription": "This app requires access to your contacts to help you connect with friends."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -25,6 +31,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e7fa49f6-e056-4b21-bda4-19d6beb2ff70"
+      }
     }
   }
 }
