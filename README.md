@@ -16,7 +16,7 @@ Please take a look it shows the project better than it can be described
 
 ### Why did you make this?
 
-The news today can be quite divisive, and with the decline of local news, I wanted to create something that focuses on hyper-local content. This app aims to foster community and shift away from the anger-inducing algorithms of widespread news platforms.
+The news today can be quite divisive, and with the decline of local news. Social media at scale brings big benefits to a few individuals but negative externalities for society as a whole. I wanted to create something that focuses on hyper-local content. This app aims to foster community and shift away from the anger-inducing algorithms of widespread news platforms.
 
 ### X feature doesn't work. I spotted a bug...
 
