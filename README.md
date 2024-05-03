@@ -1,11 +1,18 @@
 # MENN AI powered personalized news
 
-##ME News Network
+## ME News Network
 
 
 ### How does this work?
 
 MENN is an AI-generated news report focused on updates from your friends and family, rather than world news or politics. You can submit videos daily to the app. Your friends and family are invited to comment on these videos, and if they choose, they can be interviewed by our AI-powered journalist. At 8 PM every day, the AI compiles these submissions into a brief news report featuring your friends' videos and the local weather.
+
+Here's what the 1st report from my friends and family looked like:
+
+Please take a look it shows the project better than it can be described
+
+[Link to Video](https://youtu.be/xyhfM3a9xto)
+
 
 ### Why did you make this?
 
