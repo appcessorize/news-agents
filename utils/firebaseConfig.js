@@ -12,7 +12,7 @@ import { getStorage } from "firebase/storage";
 import { getFunctions } from "firebase/functions";
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBzVt83VZ-s1y2xxyLha1_YpOl86FIIcdQ",
+  apiKey: APIKEY,
   authDomain: "treeswap-wales.firebaseapp.com",
   projectId: "treeswap-wales",
   storageBucket: "treeswap-wales.appspot.com",
